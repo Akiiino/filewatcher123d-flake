@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+*.stl
+*.step
+*.glb
+
+result
+result-*
+
+.direnv
+.envrc
