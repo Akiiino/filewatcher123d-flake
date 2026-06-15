@@ -128,16 +128,28 @@
 
     in
     {
-      packages = forAllSystems (system: rec {
-        default =
-          (pythonSets.${system}.mkVirtualEnv "build123d-env" workspace.deps.default).overrideAttrs
-            (old: {
-              meta = (old.meta or { }) // {
-                mainProgram = "fw123d"; # for `nix run`
-              };
-            });
-        filewatcher123d = default;
-      });
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          venv = pythonSets.${system}.mkVirtualEnv "build123d-env" workspace.deps.default;
+        in
+        rec {
+          default =
+            pkgs.runCommandLocal "filewatcher123d"
+              {
+                meta = (venv.meta or { }) // {
+                  mainProgram = "fw123d"; # for `nix run`
+                };
+                passthru = { inherit venv; };
+              }
+              ''
+                mkdir -p $out/bin
+                ln -s ${venv}/bin/fw123d $out/bin/fw123d
+              '';
+          filewatcher123d = default;
+        }
+      );
 
       devShells = forAllSystems (
         system:
