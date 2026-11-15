@@ -4,6 +4,8 @@ version = "0"
 description = "Local build123d projects"
 requires-python = ">=3.13,<3.14"
 dependencies = [
-    "build123d>=0.10,<0.11",
+    "build123d>=0.13,<0.14",
+    "bd-warehouse>=0.4,<0.5",
+    "ocp_viewer>=1.2.0,<1.3.0",
     "filewatcher123d @ git+https://github.com/jdegenstein/filewatcher123d.git",
 ]
